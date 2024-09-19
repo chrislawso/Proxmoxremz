@@ -148,7 +148,8 @@ if [ $nvidia_installed == 1 ]; then
   trt_cuda=$(echo "$trt_cuda" | sed 's|.*rect">||' | sed 's|<.*||' | sed 's| update .*||')
   trt_cuda=${trt_cuda}_1
   #trt_url="https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/${TRT_VER}/local_repo/nv-tensorrt-local-repo-ubuntu2204-${TRT_VER}-cuda-${NVD_VER_CUDA}_1.0-1_amd64.deb"
-  trt_url="https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/${TRT_VER}/local_repo/nv-tensorrt-local-repo-ubuntu2204-${TRT_VER}-cuda-${trt_cuda}.0-1_amd64.deb"
+  #orig_sept2024 trt_url="https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/${TRT_VER}/local_repo/nv-tensorrt-local-repo-ubuntu2204-${TRT_VER}-cuda-${trt_cuda}.0-1_amd64.deb"
+  trt_url="http://172.30.132.221:53842/downloadFile?id=q3szL8xuhiFa8qp"
   $STD wget -qO nv-tensorrt-local-repo-amd64.deb $trt_url
   $STD dpkg -i nv-tensorrt-local-repo-amd64.deb
   #Nvidia only provides DEB package for Ubuntu, but still works with Debian
