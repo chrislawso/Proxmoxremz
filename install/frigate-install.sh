@@ -118,7 +118,8 @@ if [ $nvidia_installed == 1 ]; then
     os="ubuntu$os_ver"
   fi
   check_cuda_version
-  TARGET_CUDA_VER=$(echo $NVD_VER_CUDA | sed 's|\.|-|g')
+  #TARGET_CUDA_VER=$(echo $NVD_VER_CUDA | sed 's|\.|-|g')
+  TARGET_CUDA_VER="11.8_1"
   $STD apt install -y gnupg
   $STD apt-key del 7fa2af80
   wget -q https://developer.download.nvidia.com/compute/cuda/repos/${os}/x86_64/cuda-keyring_1.1-1_all.deb
@@ -133,7 +134,8 @@ if [ $nvidia_installed == 1 ]; then
 #  $STD apt update && sleep 1
   $STD apt update
   $STD apt install -qqy "cuda-toolkit-$TARGET_CUDA_VER"
-  $STD apt install -qqy "cudnn-cuda-$NVD_MAJOR_CUDA"
+#  $STD apt install -qqy "cudnn-cuda-$NVD_MAJOR_CUDA"
+  $STD apt install -qqy "cudnn-cuda-11"
   msg_ok "Installed Nvidia Dependencies"
 
   msg_info "Installing TensorRT"
@@ -141,12 +143,14 @@ if [ $nvidia_installed == 1 ]; then
   #pip3 install -U /trt-wheels/*.whl
   # Use latest TensorRT version (instead of fixed v8)
   $STD pip3 install --extra-index-url 'https://pypi.nvidia.com' numpy tensorrt cuda-python cython nvidia-cuda-runtime-cu12 nvidia-cuda-runtime-cu11 nvidia-cublas-cu11 nvidia-cudnn-cu11 onnx protobuf
-  TRT_VER=$(pip freeze | grep tensorrt== | sed "s|tensorrt==||g")
+  #TRT_VER=$(pip freeze | grep tensorrt== | sed "s|tensorrt==||g")
+  TRT_VER="8.5.3"
   TRT_MAJOR=${TRT_VER%%.*}
   #There can be slight mismatch between the installed drivers' CUDA version and the available download link, so dynamically retrieve the right link using the latest CUDA version mentioned in the TensorRT documentation
-  trt_cuda=$(curl --silent https://docs.nvidia.com/deeplearning/tensorrt/quick-start-guide/index.html#installing-debian | grep "https://developer.nvidia.com/cuda-toolkit-archive" | head -n1)
-  trt_cuda=$(echo "$trt_cuda" | sed 's|.*rect">||' | sed 's|<.*||' | sed 's| update .*||')
-  trt_cuda=${trt_cuda}_1
+  #trt_cuda=$(curl --silent https://docs.nvidia.com/deeplearning/tensorrt/quick-start-guide/index.html#installing-debian | grep "https://developer.nvidia.com/cuda-toolkit-archive" | head -n1)
+  #trt_cuda=$(echo "$trt_cuda" | sed 's|.*rect">||' | sed 's|<.*||' | sed 's| update .*||')
+  #trt_cuda=${trt_cuda}_1
+  trt_cuda="11.8_1"
   #trt_url="https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/${TRT_VER}/local_repo/nv-tensorrt-local-repo-ubuntu2204-${TRT_VER}-cuda-${NVD_VER_CUDA}_1.0-1_amd64.deb"
   #orig_sept2024 trt_url="https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/${TRT_VER}/local_repo/nv-tensorrt-local-repo-ubuntu2204-${TRT_VER}-cuda-${trt_cuda}.0-1_amd64.deb"
   trt_url="http://172.30.132.221:53842/downloadFile?id=q3szL8xuhiFa8qp"
